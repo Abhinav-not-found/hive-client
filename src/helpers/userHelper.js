@@ -12,9 +12,9 @@ const api = axios.create({
 });
 
 export const getUserInfo = async () => {
-  const { setUser, clearUser } = useUserStore.getState();
+  const { user, setUser, clearUser } = useUserStore.getState();
   try {
-    const res = await axios.get(`${API_URL}/auth/getUserInfo`, {
+    const res = await axios.get(`${API_URL}/auth/getUserInfo/${user._id}`, {
       withCredentials: true,
     });
     setUser(res.data.data);
