@@ -60,6 +60,7 @@ export function LoginForm({
             type='email'
             placeholder='m@example.com'
             required
+            className='bg-white/50'
           />
         </div>
         <div className='grid gap-3'>
@@ -78,6 +79,7 @@ export function LoginForm({
             id='password'
             type='password'
             required
+            className='bg-white/50'
           />
         </div>
         <Button type='submit' className='w-full'>
@@ -100,7 +102,10 @@ export function LoginForm({
       </div>
       <div className='text-center text-sm'>
         Don&apos;t have an account?{" "}
-        <a href='/register' className='underline underline-offset-4'>
+        <a
+          href='/register'
+          className='underline underline-offset-4 hover:text-black/50 dark:hover:text-white/80'
+        >
           Sign up
         </a>
       </div>

@@ -74,6 +74,7 @@ export function RegisterForm({
             type='text'
             placeholder='John Doe'
             required
+            className='bg-white/50'
           />
         </div>
 
@@ -86,6 +87,7 @@ export function RegisterForm({
             type='email'
             placeholder='m@example.com'
             required
+            className='bg-white/50'
           />
         </div>
 
@@ -97,6 +99,7 @@ export function RegisterForm({
             id='password'
             type='password'
             required
+            className='bg-white/50'
           />
         </div>
 
@@ -123,7 +126,10 @@ export function RegisterForm({
 
       <div className='text-center text-sm'>
         Already have an account?{" "}
-        <a href='/login' className='underline underline-offset-4'>
+        <a
+          href='/login'
+          className='underline underline-offset-4 hover:text-black/50 dark:hover:text-white/80'
+        >
           Log in
         </a>
       </div>
