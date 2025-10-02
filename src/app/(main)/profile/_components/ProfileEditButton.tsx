@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -32,10 +31,9 @@ interface UpdateProfilePayload {
 }
 
 const ProfileEditButton = ({ user }: { user: User | null }) => {
-  if (!user) return null;
   const { setUser } = useUserStore();
-  const [name, setName] = useState(user.name);
-  const [bio, setBio] = useState(user.bio || "");
+  const [name, setName] = useState(user?.name || "");
+  const [bio, setBio] = useState(user?.bio || "");
   const [open, setOpen] = useState(false);
 
   const mutation = useMutation({
@@ -43,7 +41,9 @@ const ProfileEditButton = ({ user }: { user: User | null }) => {
       handleProfileInfoUpdate(payload),
     onSuccess: (data) => {
       toast.success(data?.message);
-      setUser({ ...user, name, bio: bio, email: user?.email || "" });
+      if (user) {
+        setUser({ ...user, name, bio, email: user.email || "" });
+      }
       setOpen(false);
     },
     onError: (err: unknown) => {
@@ -52,10 +52,7 @@ const ProfileEditButton = ({ user }: { user: User | null }) => {
     },
   });
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    mutation.mutate({ name, bio });
-  };
+  if (!user) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -69,7 +66,12 @@ const ProfileEditButton = ({ user }: { user: User | null }) => {
         <DialogHeader>
           <DialogTitle>Edit Profile Info</DialogTitle>
         </DialogHeader>
-        <form onSubmit={onSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            mutation.mutate({ name, bio });
+          }}
+        >
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -84,7 +86,7 @@ const ProfileEditButton = ({ user }: { user: User | null }) => {
           />
           <div className='flex justify-end'>
             <Button
-              disabled={!name?.trim() || !bio?.trim() || mutation.isPending}
+              disabled={!name.trim() || !bio.trim() || mutation.isPending}
             >
               {mutation.isPending ? "Updating..." : "Update"}
             </Button>
