@@ -45,7 +45,9 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
           type='file'
           className='hidden'
           accept='image/*'
-          onChange={(e) => handleChange({ e, setPreview })}
+          onChange={(e) =>
+            handleChange({ e, setPreview, userId: SavedUser?._id || "" })
+          }
         />
         <div className='block md:hidden mt-1'>
           {pageId === SavedUser?._id ? (

@@ -27,13 +27,13 @@ export const getUserInfo = async () => {
   }
 };
 
-export const handleProfileInfoUpdate = async ({ name, bio }) => {
-  const res = await api.put(`${API_URL}/auth/update`, { name, bio }, { withCredentials: true });
+export const handleProfileInfoUpdate = async ({ name, bio, userId }) => {
+  const res = await api.put(`${API_URL}/auth/update/${userId}`, { name, bio }, { withCredentials: true });
   return res.data
 };
 
 
-export const handleChange = async ({ e, setPreview }) => {
+export const handleChange = async ({ e, setPreview, userId }) => {
   const file = e.target.files?.[0];
   if (!file) return;
 
@@ -44,7 +44,7 @@ export const handleChange = async ({ e, setPreview }) => {
   formData.append("image", file);
 
   try {
-    const res = await api.put(`/auth/upload`, formData, {
+    const res = await api.put(`${API_URL}/auth/upload/${userId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     setPreview(res.data.url);

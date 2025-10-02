@@ -4,14 +4,14 @@ const API_URL =
   process.env.NEXT_PUBLIC_GATEWAY_URL_PROD ||
   process.env.NEXT_PUBLIC_GATEWAY_URL;
 
-export const createPost = async (description, images) => {
+export const createPost = async (description, images, userId) => {
 
   const formData = new FormData();
   formData.append("description", description);
 
   images.forEach((file) => formData.append("images", file));
 
-  const res = await axios.post(`${API_URL}/post/create`, formData,
+  const res = await axios.post(`${API_URL}/post/create/${userId}`, formData,
     {
       withCredentials: true,
       headers: {

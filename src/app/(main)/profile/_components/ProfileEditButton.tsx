@@ -28,10 +28,11 @@ export interface User {
 interface UpdateProfilePayload {
   name: string;
   bio: string;
+  userId: string;
 }
 
 const ProfileEditButton = ({ user }: { user: User | null }) => {
-  const { setUser } = useUserStore();
+  const { user: loggedInUser, setUser } = useUserStore();
   const [name, setName] = useState(user?.name || "");
   const [bio, setBio] = useState(user?.bio || "");
   const [open, setOpen] = useState(false);
@@ -69,7 +70,7 @@ const ProfileEditButton = ({ user }: { user: User | null }) => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            mutation.mutate({ name, bio });
+            mutation.mutate({ name, bio, userId: loggedInUser?._id || "" });
           }}
         >
           <Input

@@ -14,8 +14,10 @@ import { useState, useRef } from "react";
 import { createPost } from "@/helpers/postHelper";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUserStore } from "@/store/userStore";
 
 const AddPostButton = () => {
+  const { user } = useUserStore();
   const [desc, setDesc] = useState("");
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState<File[]>([]);
@@ -30,7 +32,7 @@ const AddPostButton = () => {
     }: {
       description: string;
       files: File[];
-    }) => createPost(description, files),
+    }) => createPost(description, files, user?._id),
     onSuccess: (data) => {
       toast.success(data.message);
       setDesc("");
