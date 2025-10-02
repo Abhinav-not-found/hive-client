@@ -26,7 +26,7 @@ export function RegisterForm({
       toast.success(data.message);
       router.push("/login");
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       const axiosErr = err as AxiosError<{ message?: string }>;
 
       if (axiosErr.response) {

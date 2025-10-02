@@ -3,6 +3,7 @@ import { RegisterForm } from "@/components/blocks/register-form";
 import ThemeToggle from "@/components/ui/theme-toggle-rta";
 import useAuthRedirect from "@/hooks/authRedirect";
 import { GalleryVerticalEnd } from "lucide-react";
+import Link from "next/link";
 
 export default function RegisterPage() {
   useAuthRedirect({ redirectIfAuth: "/home" });
@@ -10,12 +11,12 @@ export default function RegisterPage() {
     <main className='grid min-h-svh lg:grid-cols-1'>
       <div className='flex flex-col items-center gap-0 p-6 md:p-10'>
         <div className='w-full md:w-1/3 flex justify-between gap-2 md:justify-between'>
-          <a href='/' className='flex items-center gap-2 font-medium'>
+          <Link href='/' className='flex items-center gap-2 font-medium'>
             <div className='bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md'>
               <GalleryVerticalEnd className='size-4' />
             </div>
             <p className='font-semibold'>Hive</p>
-          </a>
+          </Link>
           <ThemeToggle/>
         </div>
         <div className='w-full flex flex-1 items-center justify-center'>

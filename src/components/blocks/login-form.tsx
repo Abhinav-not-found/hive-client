@@ -27,7 +27,7 @@ export function LoginForm({
       toast.success(data?.message);
       router.push("/home");
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       console.error(err);
       toast.error("Login failed");
     },

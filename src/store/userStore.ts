@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist, PersistOptions } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 interface User {
   _id: string;
@@ -18,14 +18,9 @@ interface UserState {
   clearUser: () => void;
 }
 
-type MyPersist = <T extends UserState>(
-  config: (set: any, get: any) => T,
-  options: PersistOptions<T>
-) => any;
-
-export const useUserStore = create<UserState>(
-  (persist as MyPersist)(
-    (set) => ({
+export const useUserStore = create<UserState>()(
+  persist<UserState>(
+    (set, get) => ({
       user: null,
       setUser: (user: User) => set({ user }),
       clearUser: () => set({ user: null }),

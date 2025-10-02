@@ -6,13 +6,14 @@ import ProfileEditButton from "./ProfileEditButton";
 import { handleChange } from "@/helpers/userHelper";
 import { useUserStore } from "@/store/userStore";
 
-type User = {
+export interface User {
   _id: string;
+  email?: string;
   username?: string;
   name: string;
   bio?: string;
   profileImage?: string;
-};
+}
 
 type Props = {
   user: User | null;
@@ -23,7 +24,7 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
   const path = usePathname();
   const pageId = path.split("/profile/")[1];
 
-  const [preview, setPreview] = useState<String | undefined>(
+  const [preview, setPreview] = useState<string | undefined>(
     user?.profileImage
   );
 

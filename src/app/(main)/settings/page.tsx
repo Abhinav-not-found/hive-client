@@ -28,16 +28,13 @@ const SettingsPage = () => {
     </main>
   );
 };
-
-const SettingsButton = ({
-  label,
-  active,
-  setActive,
-}: {
+interface SettingsButtonProps {
   label: string;
-  active: any;
-  setActive: any;
-}) => {
+  active: string | null;
+  setActive: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const SettingsButton = ({ label, active, setActive }: SettingsButtonProps) => {
   return (
     <button
       onClick={() => setActive(label)}

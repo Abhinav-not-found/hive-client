@@ -40,7 +40,7 @@ const AddPostButton = () => {
       setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["profilePosts"] });
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       console.error(err);
       toast.error("Failed to create post");
     },

@@ -17,17 +17,33 @@ import { handleProfileInfoUpdate } from "@/helpers/userHelper";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-const ProfileEditButton = ({ user }: any) => {
+export interface User {
+  _id: string;
+  name: string;
+  bio?: string;
+  username?: string;
+  profileImage?: string;
+  email?: string;
+}
+
+interface UpdateProfilePayload {
+  name: string;
+  bio: string;
+}
+
+const ProfileEditButton = ({ user }: { user: User | null }) => {
+  if (!user) return null;
   const { setUser } = useUserStore();
-  const [name, setName] = useState(user?.name);
-  const [bio, setBio] = useState(user?.bio);
+  const [name, setName] = useState(user.name);
+  const [bio, setBio] = useState(user.bio || "");
   const [open, setOpen] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: handleProfileInfoUpdate,
+    mutationFn: (payload: UpdateProfilePayload) =>
+      handleProfileInfoUpdate(payload),
     onSuccess: (data) => {
       toast.success(data?.message);
-      setUser({ ...user, name, bio });
+      setUser({ ...user, name, bio: bio, email: user?.email || "" });
       setOpen(false);
     },
     onError: (err: unknown) => {
@@ -44,7 +60,7 @@ const ProfileEditButton = ({ user }: any) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"outline"}>
+        <Button variant='outline'>
           <SquarePen />
           Edit
         </Button>
@@ -52,7 +68,6 @@ const ProfileEditButton = ({ user }: any) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Profile Info</DialogTitle>
-          <DialogDescription></DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit}>
           <Input
@@ -68,7 +83,9 @@ const ProfileEditButton = ({ user }: any) => {
             className='mb-4 h-40 resize-none'
           />
           <div className='flex justify-end'>
-            <Button disabled={!name?.trim() || !bio?.trim || mutation.isPending}>
+            <Button
+              disabled={!name?.trim() || !bio?.trim() || mutation.isPending}
+            >
               {mutation.isPending ? "Updating..." : "Update"}
             </Button>
           </div>

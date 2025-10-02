@@ -17,28 +17,28 @@ const FeedComponent = () => {
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const fetchPosts = async () => {
-    if (loading || !hasMore) return;
-    setLoading(true);
-    const res = await getFeed(page, 10);
-
-    setPosts((prev) => {
-      const allPosts = [...prev, ...res.data];
-      const uniquePosts = Array.from(
-        new Map(allPosts.map((p) => [p._id, p])).values()
-      );
-
-      if (uniquePosts.length >= res.total) setHasMore(false);
-
-      return uniquePosts;
-    });
-
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const fetchPosts = async () => {
+      if (loading || !hasMore) return;
+      setLoading(true);
+      const res = await getFeed(page, 10);
+
+      setPosts((prev) => {
+        const allPosts = [...prev, ...res.data];
+        const uniquePosts = Array.from(
+          new Map(allPosts.map((p) => [p._id, p])).values()
+        );
+
+        if (uniquePosts.length >= res.total) setHasMore(false);
+
+        return uniquePosts;
+      });
+
+      setLoading(false);
+    };
+
     fetchPosts();
-  }, [page]);
+  }, [page, loading, hasMore]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
