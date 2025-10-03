@@ -96,6 +96,16 @@ export const handleRegister = async ({ name, email, password }) => {
 }
 
 export const getUserInfoById = async (userId) => {
-  const res = await axios.get(`${API_URL}/auth/getUserInfoById/${userId}`)
-  return res.data
+  const { clearUser } = useUserStore.getState()
+  try {
+    const res = await axios.get(`${API_URL}/auth/getUserInfoById/${userId}`)
+    return res.data
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      toast.info('Session expired, please login again');
+      await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
+      clearUser();
+    }
+    console.log(error)
+  }
 }
