@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useUserStore } from "@/store/userStore";
 import { handleProfileInfoUpdate } from "@/helpers/userHelper";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export interface User {
@@ -36,12 +36,16 @@ const ProfileEditButton = ({ user }: { user: User | null }) => {
   const [name, setName] = useState(user?.name || "");
   const [bio, setBio] = useState(user?.bio || "");
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (payload: UpdateProfilePayload) =>
       handleProfileInfoUpdate(payload),
     onSuccess: (data) => {
       toast.success(data?.message);
+      queryClient.invalidateQueries({
+        queryKey: ["getUserInfoById", loggedInUser?._id],
+      });
       if (user) {
         setUser({ ...user, name, bio, email: user.email || "" });
       }
